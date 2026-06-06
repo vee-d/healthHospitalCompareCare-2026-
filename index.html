@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>종합검진 비교 — 지앤이 vs 메디피움</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap');
+
+  :root {
+    --gne: #1d6fa4;
+    --gne-light: #e8f3fa;
+    --gne-mid: #5fadd4;
+    --medi: #0d9a6e;
+    --medi-light: #e5f6f0;
+    --medi-mid: #4fc49a;
+    --both: #6c757d;
+    --both-light: #f4f5f6;
+    --diff: #f59e0b;
+    --bg: #f7f8fb;
+    --card: #ffffff;
+    --border: #e2e6ea;
+    --text: #1a1e2e;
+    --text2: #5a6070;
+    --radius: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0 0 60px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, #0f2444 0%, #1a4a7a 50%, #0d6e52 100%);
+    padding: 40px 32px 36px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 220px; height: 220px;
+    background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero-tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 20px;
+    padding: 3px 12px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+  .hero h1 {
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.3;
+    margin-bottom: 6px;
+  }
+  .hero p {
+    font-size: 13px;
+    opacity: 0.7;
+    margin-bottom: 20px;
+  }
+  .hero-pills {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .pill-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .pill-dot.gne { background: #5fadd4; }
+  .pill-dot.medi { background: #4fc49a; }
+
+  /* ── TABS ── */
+  .tabs-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: white;
+    border-bottom: 2px solid var(--border);
+    padding: 0 16px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+  }
+  .tab {
+    padding: 14px 18px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text2);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    white-space: nowrap;
+    transition: all 0.2s;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+  }
+  .tab.active {
+    color: var(--gne);
+    border-bottom-color: var(--gne);
+  }
+  .tab:hover:not(.active) { color: var(--text); }
+
+  /* ── BODY ── */
+  .content {
+    padding: 20px 16px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* ── SUMMARY CARDS ── */
+  .summary-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .sum-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 18px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    border-top: 4px solid;
+  }
+  .sum-card.gne { border-color: var(--gne); }
+  .sum-card.medi { border-color: var(--medi); }
+  .sum-card-label { font-size: 11px; color: var(--text2); margin-bottom: 4px; font-weight: 500; }
+  .sum-card-name { font-size: 14px; font-weight: 700; margin-bottom: 10px; }
+  .sum-card-name.gne { color: var(--gne); }
+  .sum-card-name.medi { color: var(--medi); }
+  .sum-stat { display: flex; align-items: baseline; gap: 4px; margin-bottom: 2px; }
+  .sum-num { font-size: 32px; font-weight: 800; }
+  .sum-num.gne { color: var(--gne); }
+  .sum-num.medi { color: var(--medi); }
+  .sum-unit { font-size: 12px; color: var(--text2); }
+  .sum-sub { font-size: 11px; color: var(--text2); margin-top: 6px; line-height: 1.6; }
+
+  /* ── DIFF BANNER ── */
+  .diff-banner {
+    background: linear-gradient(90deg, #fffbeb, #fff8e1);
+    border: 1px solid #fcd34d;
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    font-size: 12px;
+    line-height: 1.7;
+    color: #78350f;
+  }
+  .diff-banner strong { font-weight: 700; }
+
+  /* ── SECTION PANEL ── */
+  .section-panel { display: none; }
+  .section-panel.active { display: block; }
+
+  /* ── CATEGORY SECTION ── */
+  .cat-block { margin-bottom: 16px; }
+  .cat-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--text);
+    color: white;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    user-select: none;
+  }
+  .cat-header-icon { font-size: 16px; }
+  .cat-header-title { font-size: 13px; font-weight: 700; flex: 1; }
+  .cat-header-count {
+    font-size: 10px;
+    font-weight: 600;
+    background: rgba(255,255,255,0.2);
+    border-radius: 10px;
+    padding: 2px 8px;
+  }
+  .cat-header-arrow { font-size: 11px; opacity: 0.7; transition: transform 0.2s; }
+  .cat-header.collapsed .cat-header-arrow { transform: rotate(-90deg); }
+
+  .cat-body { display: block; }
+  .cat-body.collapsed { display: none; }
+
+  /* ── TABLE ── */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card);
+    border-radius: 0 0 8px 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .compare-table thead th {
+    padding: 8px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    text-align: center;
+    border-bottom: 2px solid var(--border);
+  }
+  .th-sub { font-size: 10px; color: var(--text2); }
+  .th-gne { color: var(--gne); background: var(--gne-light); }
+  .th-medi { color: var(--medi); background: var(--medi-light); }
+  .th-item { text-align: left; width: 40%; }
+
+  .compare-table tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.12s;
+  }
+  .compare-table tbody tr:last-child { border-bottom: none; }
+  .compare-table tbody tr:hover { background: #f9fafc; }
+
+  /* highlight rows */
+  .compare-table tbody tr.row-gne-only { background: rgba(29,111,164,0.04); }
+  .compare-table tbody tr.row-medi-only { background: rgba(13,154,110,0.04); }
+
+  td {
+    padding: 8px 12px;
+    font-size: 12px;
+    vertical-align: middle;
+  }
+  .td-item { color: var(--text); font-weight: 400; }
+  .td-sub { font-size: 10px; color: var(--text2); margin-top: 1px; }
+  .td-center { text-align: center; }
+
+  /* status badges */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    border-radius: 6px;
+    padding: 3px 8px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .badge-o-gne { background: var(--gne-light); color: var(--gne); }
+  .badge-o-medi { background: var(--medi-light); color: var(--medi); }
+  .badge-x { background: #f3f4f6; color: #9ca3af; }
+  .badge-sel { background: #fef3c7; color: #92400e; }
+  .badge-cond { background: #f0fdf4; color: #15803d; font-size: 10px; }
+
+  /* ── SELECT ITEMS ── */
+  .select-block {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 18px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    border-left: 4px solid;
+  }
+  .select-block.gne-sel { border-color: var(--gne); }
+  .select-block.medi-sel { border-color: var(--medi); }
+  .select-title {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .select-title.gne { color: var(--gne); }
+  .select-title.medi { color: var(--medi); }
+  .select-quota {
+    display: inline-block;
+    background: var(--diff);
+    color: white;
+    border-radius: 10px;
+    padding: 2px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .group-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 10px 0 6px;
+  }
+  .item-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+  .chip {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 11px;
+    color: var(--text);
+  }
+  .chip.highlight-g { background: var(--gne-light); border-color: var(--gne-mid); color: var(--gne); font-weight: 600; }
+  .chip.highlight-m { background: var(--medi-light); border-color: var(--medi-mid); color: var(--medi); font-weight: 600; }
+  .chip.mri-chip { background: #fdf4ff; border-color: #d8b4fe; color: #7e22ce; font-weight: 700; }
+
+  /* legend */
+  .legend {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    padding: 10px 14px;
+    background: var(--card);
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; }
+
+  /* filter bar */
+  .filter-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .filter-btn {
+    padding: 5px 12px;
+    border-radius: 16px;
+    border: 1.5px solid var(--border);
+    background: var(--card);
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--text2);
+    transition: all 0.15s;
+  }
+  .filter-btn.active { border-color: var(--gne); background: var(--gne-light); color: var(--gne); }
+  .filter-btn.active.m { border-color: var(--medi); background: var(--medi-light); color: var(--medi); }
+  .filter-btn.active.diff { border-color: var(--diff); background: #fffbeb; color: #92400e; }
+
+  .note-box {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 11px;
+    color: #1e40af;
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-tag">2026년 네이버 복리후생 건강검진</div>
+  <h1>종합검진 항목 비교<br>지앤이 vs 메디피움</h1>
+  <p>필수항목 + 선택항목 전체 포함</p>
+  <div class="hero-pills">
+    <div class="pill"><span class="pill-dot gne"></span>지앤이 알파돔 메디컬센터</div>
+    <div class="pill"><span class="pill-dot medi"></span>메디피움 (판교/동탄)</div>
+  </div>
+</div>
+
+<div class="tabs-wrap">
+  <button class="tab active" onclick="showTab('overview')">📊 요약 비교</button>
+  <button class="tab" onclick="showTab('required')">🔬 필수항목</button>
+  <button class="tab" onclick="showTab('optional')">✅ 선택항목</button>
+</div>
+
+<div class="content">
+
+  <!-- ══ TAB 1: OVERVIEW ══ -->
+  <div id="tab-overview" class="section-panel active">
+    <div class="summary-row">
+      <div class="sum-card gne">
+        <div class="sum-card-label">분당 경기권</div>
+        <div class="sum-card-name gne">지앤이 알파돔</div>
+        <div class="sum-stat">
+          <span class="sum-num gne">79</span>
+          <span class="sum-unit">개 필수항목</span>
+        </div>
+        <div class="sum-sub">
+          선택항목 <strong>택4</strong><br>
+          (A그룹 택2 · B그룹 택1 · C그룹 택1)
+        </div>
+      </div>
+      <div class="sum-card medi">
+        <div class="sum-card-label">분당 경기권</div>
+        <div class="sum-card-name medi">메디피움 판교/동탄</div>
+        <div class="sum-stat">
+          <span class="sum-num medi">92</span>
+          <span class="sum-unit">개 필수항목</span>
+        </div>
+        <div class="sum-sub">
+          선택항목 <strong>택2</strong><br>
+          (A그룹 택1 · B그룹 택1)
+        </div>
+      </div>
+    </div>
+
+    <div class="diff-banner">
+      <strong>핵심 차이 요약</strong><br>
+      📌 <strong>메디피움이 필수항목 13개 더 많음</strong> — 갑상선·골반·전립선 초음파가 기본 포함, A형간염·대장암 마커 등 추가<br>
+      📌 <strong>지앤이는 선택항목을 4개 고를 수 있음</strong> (메디피움은 2개) — 특히 C그룹에서 뇌MRI 선택 가능<br>
+      📌 <strong>지앤이에만 있는 것</strong>: CRP(급성염증), 매독검사
+    </div>
+
+    <!-- 항목 차이 카드 -->
+    <div style="margin-bottom:16px">
+      <div style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--text)">메디피움 필수항목에만 있는 것 (15개)</div>
+      <div style="background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:0 1px 6px rgba(0,0,0,0.05);">
+        <div style="display:flex;flex-wrap:wrap;gap:7px">
+          <span class="chip highlight-m">🦷 구강검사 + 스케일링</span>
+          <span class="chip highlight-m">⚖️ 대사증후군 평가</span>
+          <span class="chip highlight-m">🔬 A형간염 항체</span>
+          <span class="chip highlight-m">🎯 대장암 종양표지자</span>
+          <span class="chip highlight-m">🫁 갑상선 초음파</span>
+          <span class="chip highlight-m">🔮 골반강 초음파 (여)</span>
+          <span class="chip highlight-m">🔮 전립선 초음파 (남)</span>
+          <span class="chip highlight-m">🩸 봉산호중구</span>
+          <span class="chip highlight-m">🩸 후골수구</span>
+          <span class="chip highlight-m">🩸 골수구</span>
+          <span class="chip highlight-m">🩸 전골수구</span>
+          <span class="chip highlight-m">🩸 골수아세포</span>
+          <span class="chip highlight-m">🧪 펩시노겐</span>
+          <span class="chip highlight-m">💩 분변잠혈 (50세↑)</span>
+          <span class="chip highlight-m">👁️ 안과 전항목 (지앤이는 시력만)</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:24px">
+      <div style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--text)">지앤이 필수항목에만 있는 것 (2개)</div>
+      <div style="background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:0 1px 6px rgba(0,0,0,0.05);">
+        <div style="display:flex;flex-wrap:wrap;gap:7px">
+          <span class="chip highlight-g">🧫 CRP (급성염증 스크리닝)</span>
+          <span class="chip highlight-g">🔬 매독검사</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--text)">선택항목 풀 비교</div>
+    <div style="background:var(--card);border-radius:var(--radius);overflow:hidden;box-shadow:0 1px 6px rgba(0,0,0,0.05);margin-bottom:8px">
+      <table style="width:100%;border-collapse:collapse;font-size:12px">
+        <thead>
+          <tr style="background:#f7f8fb;border-bottom:2px solid var(--border)">
+            <th style="padding:10px 14px;text-align:left;color:var(--text2);font-weight:600;font-size:11px">구분</th>
+            <th style="padding:10px 14px;text-align:center;color:var(--gne);font-weight:700;font-size:11px">지앤이</th>
+            <th style="padding:10px 14px;text-align:center;color:var(--medi);font-weight:700;font-size:11px">메디피움</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:9px 14px;font-weight:600">선택 개수</td>
+            <td style="padding:9px 14px;text-align:center"><span style="background:var(--gne-light);color:var(--gne);border-radius:6px;padding:3px 10px;font-weight:700">택 4</span></td>
+            <td style="padding:9px 14px;text-align:center"><span style="background:var(--medi-light);color:var(--medi);border-radius:6px;padding:3px 10px;font-weight:700">택 2</span></td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:9px 14px;font-weight:600">초음파류</td>
+            <td style="padding:9px 14px">A그룹: 하복부(자궁/난소)·전립선·갑상선·유방·경동맥 중 2개</td>
+            <td style="padding:9px 14px">A그룹: 경동맥·유방초음파 선택 가능 (MRI/MRA 등과 경쟁)</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:9px 14px;font-weight:600">CT류</td>
+            <td style="padding:9px 14px">B그룹 1개: 뇌·폐·경추·요추·관상동맥·복부비만CT 중 택1</td>
+            <td style="padding:9px 14px">B그룹 1개: 심장·뇌·경추·요추·폐·비타민D·호르몬·동맥경화도 등 택1</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:9px 14px;font-weight:600">MRI / 고급검사</td>
+            <td style="padding:9px 14px"><span style="color:#7e22ce;font-weight:700">C그룹 1개: 뇌MRI 또는 수면대장내시경 택1</span></td>
+            <td style="padding:9px 14px">A그룹에서 뇌MRI/MRA 선택 가능 (유전자검사 등과 경쟁)</td>
+          </tr>
+          <tr>
+            <td style="padding:9px 14px;font-weight:600">기타 고급옵션</td>
+            <td style="padding:9px 14px">—</td>
+            <td style="padding:9px 14px">B그룹: 비타민D, 호르몬검사, 호모시스테인, 심부전선별, 동맥경화도, 복부대동맥초음파, 통풍CT 등</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══ TAB 2: REQUIRED ══ -->
+  <div id="tab-required" class="section-panel">
+    <div class="legend">
+      <div class="legend-item"><span class="badge badge-o-gne">✓ 지앤이</span> 지앤이 포함</div>
+      <div class="legend-item"><span class="badge badge-o-medi">✓ 메디피움</span> 메디피움 포함</div>
+      <div class="legend-item"><span class="badge badge-x">✕</span> 미포함</div>
+      <div class="legend-item"><span class="badge badge-sel">선택</span> 선택항목에서 가능</div>
+    </div>
+
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterRows('all', this)">전체</button>
+      <button class="filter-btn" onclick="filterRows('diff', this)" style="">차이항목만</button>
+      <button class="filter-btn" onclick="filterRows('both', this)">공통 포함</button>
+      <button class="filter-btn m" onclick="filterRows('medi-only', this)">메디피움만</button>
+      <button class="filter-btn" onclick="filterRows('gne-only', this)">지앤이만</button>
+    </div>
+
+    <!-- 신체계측 -->
+    <div class="cat-block">
+      <div class="cat-header" style="background:#374151" onclick="toggleCat(this)">
+        <span class="cat-header-icon">🏃</span>
+        <span class="cat-header-title">신체계측 · 기본진찰</span>
+        <span class="cat-header-count">2개</span>
+        <span class="cat-header-arrow">▼</span>
+      </div>
+      <div class="cat-body">
+        <table class="compare-table">
+          <thead><tr>
+            <th class="th-item">검사항목</th>
+            <th class="th-gne">지앤이</th>
+            <th class="th-medi">메디피움</th>
+          </tr></thead>
+          <tbody>
+            <tr data-status="both"><td class="td-item">진찰 · 신장·체중·혈압·맥박·시력 등</td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">체성분검사 <span class="td-sub">영양·체형·비만 진단</span></td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 대사증후군 -->
+    <div class="cat-block">
+      <div class="cat-header" style="background:#4b5563" onclick="toggleCat(this)">
+        <span class="cat-header-icon">⚖️</span>
+        <span class="cat-header-title">대사증후군</span>
+        <span class="cat-header-count" style="background:rgba(252,211,77,0.3);color:#fbbf24">차이 있음</span>
+        <span class="cat-header-arrow">▼</span>
+      </div>
+      <div class="cat-body">
+        <table class="compare-table">
+          <thead><tr>
+            <th class="th-item">검사항목</th>
+            <th class="th-gne">지앤이</th>
+            <th class="th-medi">메디피움</th>
+          </tr></thead>
+          <tbody>
+            <tr class="row-medi-only" data-status="medi-only"><td class="td-item">대사증후군 평가 <span class="td-sub">고지혈증·당뇨·고혈압·비만 통합평가</span></td><td class="td-center"><span class="badge badge-x">✕</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 안과 청력 치과 -->
+    <div class="cat-block">
+      <div class="cat-header" style="background:#374151" onclick="toggleCat(this)">
+        <span class="cat-header-icon">👁️</span>
+        <span class="cat-header-title">안과 · 청력 · 치과</span>
+        <span class="cat-header-count" style="background:rgba(252,211,77,0.3);color:#fbbf24">차이 있음</span>
+        <span class="cat-header-arrow">▼</span>
+      </div>
+      <div class="cat-body">
+        <table class="compare-table">
+          <thead><tr>
+            <th class="th-item">검사항목</th>
+            <th class="th-gne">지앤이</th>
+            <th class="th-medi">메디피움</th>
+          </tr></thead>
+          <tbody>
+            <tr class="row-medi-only" data-status="medi-only"><td class="td-item">안과검사 <span class="td-sub">안압·안저·색신·시력</span></td><td class="td-center"><span class="badge badge-cond">시력만</span></td><td class="td-center"><span class="badge badge-o-medi">✓ 색신제외</span></td></tr>
+            <tr data-status="both"><td class="td-item">청력검사</td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-cond">고막제외</span></td></tr>
+            <tr class="row-medi-only" data-status="medi-only"><td class="td-item">구강검사 <span class="td-sub">치주질환</span></td><td class="td-center"><span class="badge badge-x">✕</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr class="row-medi-only" data-status="medi-only"><td class="td-item">스케일링 <span class="td-sub">건보 청구 동의자</span></td><td class="td-center"><span class="badge badge-x">✕</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 호흡기 -->
+    <div class="cat-block">
+      <div class="cat-header" style="background:#374151" onclick="toggleCat(this)">
+        <span class="cat-header-icon">🫁</span>
+        <span class="cat-header-title">호흡기 · 순환기 검사</span>
+        <span class="cat-header-count">2개 공통</span>
+        <span class="cat-header-arrow">▼</span>
+      </div>
+      <div class="cat-body">
+        <table class="compare-table">
+          <thead><tr>
+            <th class="th-item">검사항목</th>
+            <th class="th-gne">지앤이</th>
+            <th class="th-medi">메디피움</th>
+          </tr></thead>
+          <tbody>
+            <tr data-status="both"><td class="td-item">흉부 X-선 (직촬) <span class="td-sub">결핵·폐암·폐기종·늑막질환</span></td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">심전도 (EKG) <span class="td-sub">심장비대·심근경색·심장전도장애</span></td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 혈액검사: 간기능 -->
+    <div class="cat-block">
+      <div class="cat-header" style="background:#1e3a5f" onclick="toggleCat(this)">
+        <span class="cat-header-icon">🩸</span>
+        <span class="cat-header-title">혈액검사 — 간기능</span>
+        <span class="cat-header-count">10개 공통</span>
+        <span class="cat-header-arrow">▼</span>
+      </div>
+      <div class="cat-body">
+        <table class="compare-table">
+          <thead><tr>
+            <th class="th-item">검사항목</th>
+            <th class="th-gne">지앤이</th>
+            <th class="th-medi">메디피움</th>
+          </tr></thead>
+          <tbody>
+            <tr data-status="both"><td class="td-item">총단백 <span class="td-sub">영양상태·간기능</span></td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">알부민 A/G ratio <span class="td-sub">신증후군·만성간질환</span></td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">혈청 GOT (AST)</td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">혈청 GPT (ALT)</td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">T빌리루빈 <span class="td-sub">황달·급성간염</span></td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">D빌리루빈</td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">감마GTP <span class="td-sub">지방간·알콜성 간장애</span></td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">알카리포스파타제(ALP) <span class="td-sub">폐쇄성황달·간암</span></td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">글로부린 <span class="td-sub">황달·간기능장애</span></td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">I빌리루빈 <span class="td-sub">황달·간장질환</span></td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 혈액검사: 간염 -->
+    <div class="cat-block">
+      <div class="cat-header" style="background:#1e3a5f" onclick="toggleCat(this)">
+        <span class="cat-header-icon">🦠</span>
+        <span class="cat-header-title">혈액검사 — 간염</span>
+        <span class="cat-header-count" style="background:rgba(252,211,77,0.3);color:#fbbf24">차이 있음</span>
+        <span class="cat-header-arrow">▼</span>
+      </div>
+      <div class="cat-body">
+        <table class="compare-table">
+          <thead><tr>
+            <th class="th-item">검사항목</th>
+            <th class="th-gne">지앤이</th>
+            <th class="th-medi">메디피움</th>
+          </tr></thead>
+          <tbody>
+            <tr class="row-medi-only" data-status="medi-only"><td class="td-item">A형간염 항체 (HAV Ab)</td><td class="td-center"><span class="badge badge-x">✕</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">B형간염 항원 (HBs Ag)</td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">B형간염 항체 (HBs Ab)</td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">C형간염 검사</td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 혈액검사: 갑상선·대사·당뇨 -->
+    <div class="cat-block">
+      <div class="cat-header" style="background:#1e3a5f" onclick="toggleCat(this)">
+        <span class="cat-header-icon">🧬</span>
+        <span class="cat-header-title">혈액검사 — 갑상선 · 당뇨 · 관절 · 신장</span>
+        <span class="cat-header-count">9개 공통</span>
+        <span class="cat-header-arrow">▼</span>
+      </div>
+      <div class="cat-body">
+        <table class="compare-table">
+          <thead><tr>
+            <th class="th-item">검사항목</th>
+            <th class="th-gne">지앤이</th>
+            <th class="th-medi">메디피움</th>
+          </tr></thead>
+          <tbody>
+            <tr data-status="both"><td class="td-item">갑상선자극호르몬 (TSH)</td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">싸이록신 T4 / Free T4</td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">류마티즘 인자 · 요산 <span class="td-sub">관절염·통풍</span></td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">혈당 <span class="td-sub">당뇨병</span></td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">당화혈색소 (HbA1C)</td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">칼슘·인 <span class="td-sub">신장·골질환·부갑상선</span></td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">혈청철 · 철결합능 · 불포화철결합능 <span class="td-sub">빈혈</span></td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">요소질소 · 크레아티닌 <span class="td-sub">신장기능</span></td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">전해질 (소디움·포타시움·염소)</td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 혈액검사: 순환기·염증 -->
+    <div class="cat-block">
+      <div class="cat-header" style="background:#1e3a5f" onclick="toggleCat(this)">
+        <span class="cat-header-icon">❤️</span>
+        <span class="cat-header-title">혈액검사 — 순환기 · 염증</span>
+        <span class="cat-header-count" style="background:rgba(252,211,77,0.3);color:#fbbf24">차이 있음</span>
+        <span class="cat-header-arrow">▼</span>
+      </div>
+      <div class="cat-body">
+        <table class="compare-table">
+          <thead><tr>
+            <th class="th-item">검사항목</th>
+            <th class="th-gne">지앤이</th>
+            <th class="th-medi">메디피움</th>
+          </tr></thead>
+          <tbody>
+            <tr data-status="both"><td class="td-item">총콜레스테롤</td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">HDL·LDL 콜레스테롤</td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">중성지방 (Triglyceride)</td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">크레아티닌키나제 <span class="td-sub">심근경색·근육질환</span></td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">유산탈수효소 (LDH)</td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">심장병 위험인자 (CRF)</td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr class="row-gne-only" data-status="gne-only"><td class="td-item">CRP <span class="td-sub">급성염증 스크리닝</span></td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-x">✕</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 혈액검사: 혈구 -->
+    <div class="cat-block">
+      <div class="cat-header" style="background:#1e3a5f" onclick="toggleCat(this)">
+        <span class="cat-header-icon">🔴</span>
+        <span class="cat-header-title">혈액검사 — 혈구 · CBC</span>
+        <span class="cat-header-count" style="background:rgba(252,211,77,0.3);color:#fbbf24">일부 차이</span>
+        <span class="cat-header-arrow">▼</span>
+      </div>
+      <div class="cat-body">
+        <table class="compare-table">
+          <thead><tr>
+            <th class="th-item">검사항목</th>
+            <th class="th-gne">지앤이</th>
+            <th class="th-medi">메디피움</th>
+          </tr></thead>
+          <tbody>
+            <tr data-status="both"><td class="td-item">백혈구수 · 적혈구수 · 혈색소(Hb)</td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">적혈구지수 · 혈소판수</td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">혈소판용적(PCT) · 혈소판분포(PDW)</td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">림프구 · 단핵구 · 호산구 · 호염기구</td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">분획호중구 · 적혈구분포도 · 헤마토크릿</td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr class="row-medi-only" data-status="medi-only"><td class="td-item">봉산호중구 <span class="td-sub">급만성 염증·백혈병·알레르기</span></td><td class="td-center"><span class="badge badge-x">✕</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr class="row-medi-only" data-status="medi-only"><td class="td-item">후골수구 · 골수구 · 전골수구 · 골수아세포 <span class="td-sub">백혈병 관련</span></td><td class="td-center"><span class="badge badge-x">✕</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 혈액검사: 종양표지자 -->
+    <div class="cat-block">
+      <div class="cat-header" style="background:#1e3a5f" onclick="toggleCat(this)">
+        <span class="cat-header-icon">🎯</span>
+        <span class="cat-header-title">혈액검사 — 종양표지자</span>
+        <span class="cat-header-count" style="background:rgba(252,211,77,0.3);color:#fbbf24">차이 있음</span>
+        <span class="cat-header-arrow">▼</span>
+      </div>
+      <div class="cat-body">
+        <table class="compare-table">
+          <thead><tr>
+            <th class="th-item">검사항목</th>
+            <th class="th-gne">지앤이</th>
+            <th class="th-medi">메디피움</th>
+          </tr></thead>
+          <tbody>
+            <tr data-status="both"><td class="td-item">간암 (AFP)</td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr class="row-medi-only" data-status="medi-only"><td class="td-item">대장암 (CEA)</td><td class="td-center"><span class="badge badge-x">✕</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">췌장암 (CA 19-9)</td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">전립선암 PSA (남)</td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">난소암 CA125 (여)</td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 혈액검사: 성병 -->
+    <div class="cat-block">
+      <div class="cat-header" style="background:#1e3a5f" onclick="toggleCat(this)">
+        <span class="cat-header-icon">🔬</span>
+        <span class="cat-header-title">혈액검사 — 성병</span>
+        <span class="cat-header-count" style="background:rgba(252,211,77,0.3);color:#fbbf24">차이 있음</span>
+        <span class="cat-header-arrow">▼</span>
+      </div>
+      <div class="cat-body">
+        <table class="compare-table">
+          <thead><tr>
+            <th class="th-item">검사항목</th>
+            <th class="th-gne">지앤이</th>
+            <th class="th-medi">메디피움</th>
+          </tr></thead>
+          <tbody>
+            <tr class="row-gne-only" data-status="gne-only"><td class="td-item">매독검사</td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-x">✕</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 초음파 -->
+    <div class="cat-block">
+      <div class="cat-header" style="background:#0f4c35" onclick="toggleCat(this)">
+        <span class="cat-header-icon">🔊</span>
+        <span class="cat-header-title">초음파 검사</span>
+        <span class="cat-header-count" style="background:rgba(252,211,77,0.3);color:#fbbf24">큰 차이 있음</span>
+        <span class="cat-header-arrow">▼</span>
+      </div>
+      <div class="cat-body">
+        <table class="compare-table">
+          <thead><tr>
+            <th class="th-item">검사항목</th>
+            <th class="th-gne">지앤이</th>
+            <th class="th-medi">메디피움</th>
+          </tr></thead>
+          <tbody>
+            <tr data-status="both"><td class="td-item">상복부 초음파 <span class="td-sub">간·담도·비장·췌장·신장</span></td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr class="row-medi-only" data-status="medi-only"><td class="td-item">갑상선 초음파 <span class="td-sub">선종·낭종·암</span></td><td class="td-center"><span class="badge badge-x">✕</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr class="row-medi-only" data-status="medi-only"><td class="td-item">전립선 초음파 (남) <span class="td-sub">암·염·비대</span></td><td class="td-center"><span class="badge badge-x">✕</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr class="row-medi-only" data-status="medi-only"><td class="td-item">골반강 초음파 (여) <span class="td-sub">근종·난소낭종·내막종 / 여성전문의</span></td><td class="td-center"><span class="badge badge-x">✕</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr data-status="both"><td class="td-item">자궁경부암 검사 (여)</td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓ 여의사</span></td></tr>
+            <tr data-status="both"><td class="td-item">유방암 X선 (여) <span class="td-sub">만 40세 이상</span></td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 소화기 -->
+    <div class="cat-block">
+      <div class="cat-header" style="background:#374151" onclick="toggleCat(this)">
+        <span class="cat-header-icon">🍽️</span>
+        <span class="cat-header-title">소화기 검사</span>
+        <span class="cat-header-count" style="background:rgba(252,211,77,0.3);color:#fbbf24">차이 있음</span>
+        <span class="cat-header-arrow">▼</span>
+      </div>
+      <div class="cat-body">
+        <table class="compare-table">
+          <thead><tr>
+            <th class="th-item">검사항목</th>
+            <th class="th-gne">지앤이</th>
+            <th class="th-medi">메디피움</th>
+          </tr></thead>
+          <tbody>
+            <tr data-status="both"><td class="td-item">위내시경 (택1 — 일반/수면) <span class="td-sub">위암·위궤양·십이지장염</span></td><td class="td-center"><span class="badge badge-o-gne">✓ 택1</span></td><td class="td-center"><span class="badge badge-o-medi">✓ 택1</span></td></tr>
+            <tr data-status="both"><td class="td-item">췌장 아밀라아제 <span class="td-sub">급만성 췌장염</span></td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr class="row-medi-only" data-status="medi-only"><td class="td-item">펩시노겐 <span class="td-sub">위염·위암 위험도 / 위내시경 선택 시</span></td><td class="td-center"><span class="badge badge-x">✕</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 골밀도·대소변 -->
+    <div class="cat-block">
+      <div class="cat-header" style="background:#374151" onclick="toggleCat(this)">
+        <span class="cat-header-icon">🦴</span>
+        <span class="cat-header-title">골밀도 · 대소변 · 기타</span>
+        <span class="cat-header-count" style="background:rgba(252,211,77,0.3);color:#fbbf24">일부 차이</span>
+        <span class="cat-header-arrow">▼</span>
+      </div>
+      <div class="cat-body">
+        <table class="compare-table">
+          <thead><tr>
+            <th class="th-item">검사항목</th>
+            <th class="th-gne">지앤이</th>
+            <th class="th-medi">메디피움</th>
+          </tr></thead>
+          <tbody>
+            <tr data-status="both"><td class="td-item">골밀도 (BMD) <span class="td-sub">지앤이:50세↑ / 메디피움:40세이상 여</span></td><td class="td-center"><span class="badge badge-cond">50세↑</span></td><td class="td-center"><span class="badge badge-cond">40세↑여</span></td></tr>
+            <tr data-status="both"><td class="td-item">소변검사 14종 <span class="td-sub">요산도·요비중·단백·당·잠혈 등</span></td><td class="td-center"><span class="badge badge-o-gne">✓</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+            <tr class="row-medi-only" data-status="medi-only"><td class="td-item">분변잠혈반응검사 <span class="td-sub">대장암·위장관암 (만 50세 이상)</span></td><td class="td-center"><span class="badge badge-x">✕</span></td><td class="td-center"><span class="badge badge-o-medi">✓</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TAB 3: OPTIONAL ══ -->
+  <div id="tab-optional" class="section-panel">
+
+    <div class="note-box">
+      ★ CT 2부위 이상 선택 시 피폭 우려로 권장하지 않습니다.<br>
+      ★ 70세 이상 고령자는 수면 위/대장내시경 제한이 있습니다.
+    </div>
+
+    <div class="select-block gne-sel">
+      <div class="select-title gne">🔵 지앤이 알파돔 — 선택항목</div>
+      <span class="select-quota">2026년 총 택 4개</span>
+
+      <div class="group-label">A그룹 — 2개 선택 (초음파)</div>
+      <div class="item-chips">
+        <span class="chip highlight-g">하복부초음파 (자궁·난소)</span>
+        <span class="chip highlight-g">전립선초음파 (남)</span>
+        <span class="chip highlight-g">갑상선초음파</span>
+        <span class="chip highlight-g">유방초음파</span>
+        <span class="chip highlight-g">경동맥초음파</span>
+      </div>
+
+      <div class="group-label">B그룹 — 1개 선택 (CT)</div>
+      <div class="item-chips">
+        <span class="chip">뇌 CT</span>
+        <span class="chip">폐 CT</span>
+        <span class="chip">경추 CT</span>
+        <span class="chip">요추 CT</span>
+        <span class="chip">관상동맥석회화 CT</span>
+        <span class="chip">복부비만 CT</span>
+      </div>
+
+      <div class="group-label">C그룹 — 1개 선택 (MRI / 내시경)</div>
+      <div class="item-chips">
+        <span class="chip mri-chip">🧠 뇌 MRI</span>
+        <span class="chip">수면대장내시경 <small>(본인부담 3만원)</small></span>
+      </div>
+    </div>
+
+    <div class="select-block medi-sel">
+      <div class="select-title medi">🟢 메디피움 (판교/동탄) — 선택항목</div>
+      <span class="select-quota">2026년 총 택 2개 (A택1 + B택1)</span>
+
+      <div class="group-label">A그룹 — 1개 선택 (고급 검사)</div>
+      <div class="item-chips">
+        <span class="chip mri-chip">🧠 뇌 MRI-T2</span>
+        <span class="chip mri-chip">🧠 뇌 MRA</span>
+        <span class="chip highlight-m">심장초음파</span>
+        <span class="chip highlight-m">간섬유화초음파</span>
+        <span class="chip">수면대장내시경 <small>(70세↑불가)</small></span>
+        <span class="chip">대장용종검사 M2PK</span>
+        <span class="chip highlight-m">경동맥초음파</span>
+        <span class="chip highlight-m">유방초음파</span>
+        <span class="chip">유전자분석 남성암 5종</span>
+        <span class="chip">유전자분석 여성암 5종</span>
+        <span class="chip">유전자분석 뇌신경계 5종</span>
+        <span class="chip">유전자분석 심장 5종</span>
+        <span class="chip">유전자분석 폐 5종</span>
+      </div>
+
+      <div class="group-label">B그룹 — 1개 선택 (CT·혈액 심화)</div>
+      <div class="item-chips">
+        <span class="chip">심장(관상동맥석회화) CT</span>
+        <span class="chip">뇌 CT</span>
+        <span class="chip">경추 CT</span>
+        <span class="chip">요추 CT</span>
+        <span class="chip">폐 CT</span>
+        <span class="chip highlight-m">비타민 D 검사</span>
+        <span class="chip highlight-m">호르몬검사 (FSH·Estradiol/Testosterone)</span>
+        <span class="chip highlight-m">호모시스테인</span>
+        <span class="chip highlight-m">심부전 선별검사</span>
+        <span class="chip highlight-m">동맥경화도</span>
+        <span class="chip highlight-m">복부대동맥초음파</span>
+        <span class="chip">통풍 CT</span>
+        <span class="chip">복부비만 CT</span>
+      </div>
+    </div>
+
+    <!-- 선택항목 비교 요약표 -->
+    <div style="font-size:13px;font-weight:700;margin:20px 0 10px;color:var(--text)">선택항목 비교 핵심</div>
+    <div style="background:var(--card);border-radius:var(--radius);overflow:hidden;box-shadow:0 1px 6px rgba(0,0,0,0.05);">
+      <table style="width:100%;border-collapse:collapse;font-size:12px">
+        <thead>
+          <tr style="background:#f7f8fb;border-bottom:2px solid var(--border)">
+            <th style="padding:10px 14px;text-align:left;font-size:11px;color:var(--text2)">항목</th>
+            <th style="padding:10px 14px;text-align:center;color:var(--gne);font-size:11px">지앤이</th>
+            <th style="padding:10px 14px;text-align:center;color:var(--medi);font-size:11px">메디피움</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:9px 14px;font-weight:600">선택 가능 수</td>
+            <td style="padding:9px 14px;text-align:center;color:var(--gne);font-weight:700">4개</td>
+            <td style="padding:9px 14px;text-align:center;color:var(--medi);font-weight:700">2개</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:9px 14px;font-weight:600">초음파</td>
+            <td style="padding:9px 14px;color:var(--gne)">A에서 2개 자유선택<br><small>갑상선·경동맥·유방·골반·전립선</small></td>
+            <td style="padding:9px 14px;color:var(--medi)">A에서 경동맥·유방·심장·간섬유화 중 1개<br><small>MRI/유전자와 경쟁</small></td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:9px 14px;font-weight:600">뇌 MRI</td>
+            <td style="padding:9px 14px;color:var(--gne)">C그룹에서 선택 가능</td>
+            <td style="padding:9px 14px;color:var(--medi)">A그룹에서 선택 가능</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:9px 14px;font-weight:600">혈액 심화</td>
+            <td style="padding:9px 14px;color:#9ca3af">해당 없음</td>
+            <td style="padding:9px 14px;color:var(--medi)">B그룹: 비타민D·호르몬·호모시스테인·<br>심부전·동맥경화도 등</td>
+          </tr>
+          <tr>
+            <td style="padding:9px 14px;font-weight:600">유전자검사</td>
+            <td style="padding:9px 14px;color:#9ca3af">해당 없음</td>
+            <td style="padding:9px 14px;color:var(--medi)">A그룹: 암·뇌신경·심장·폐 등 5종 세트</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /content -->
+
+<script>
+  function showTab(name) {
+    document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  function toggleCat(header) {
+    header.classList.toggle('collapsed');
+    header.nextElementSibling.classList.toggle('collapsed');
+  }
+
+  function filterRows(type, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => {
+      b.classList.remove('active', 'm', 'diff');
+    });
+    btn.classList.add('active');
+    if (type === 'medi-only') btn.classList.add('m');
+    if (type === 'diff') btn.classList.add('diff');
+
+    document.querySelectorAll('tbody tr[data-status]').forEach(row => {
+      const s = row.dataset.status;
+      if (type === 'all') { row.style.display = ''; return; }
+      if (type === 'diff') { row.style.display = (s !== 'both') ? '' : 'none'; return; }
+      if (type === 'both') { row.style.display = (s === 'both') ? '' : 'none'; return; }
+      if (type === 'medi-only') { row.style.display = (s === 'medi-only') ? '' : 'none'; return; }
+      if (type === 'gne-only') { row.style.display = (s === 'gne-only') ? '' : 'none'; return; }
+    });
+
+    // ensure parent cats visible/hidden
+    document.querySelectorAll('.cat-body').forEach(body => {
+      if (body.classList.contains('collapsed')) return;
+      const visible = [...body.querySelectorAll('tbody tr[data-status]')].some(r => r.style.display !== 'none');
+      body.closest('.cat-block').style.display = visible ? '' : 'none';
+    });
+    if (type === 'all') {
+      document.querySelectorAll('.cat-block').forEach(b => b.style.display = '');
+    }
+  }
+</script>
+</body>
+</html>
